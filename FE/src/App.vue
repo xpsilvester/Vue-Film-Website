@@ -9,8 +9,11 @@
 export default {
   name: 'App',
   created () {
-    this.$http.get('/get').then((data) => {
-      console.log(data)
+    this.$http.get('/api/get').then((data) => {
+      console.log(data.body)
+    })
+    this.$http.post('/api/post').then((data) => {
+      console.log(data.body)
     })
   }
 }

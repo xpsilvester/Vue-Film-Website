@@ -22,11 +22,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
-app.get('/get', function (req, res) {
+app.get('/api/get', function (req, res) {
   res.send('Got a GET request')
 });
 
-app.post('/post', function (req, res) {
+app.post('/api/post', function (req, res) {
   res.send('Got a POST request')
 })
 
