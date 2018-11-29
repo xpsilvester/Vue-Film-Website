@@ -7,7 +7,12 @@
 
 <script>
 export default {
-  name: 'App'
+  name: 'App',
+  created () {
+    this.$http.get('/get').then((data) => {
+      console.log(data)
+    })
+  }
 }
 </script>
 
