@@ -18,7 +18,7 @@ router.post('/login',(req,res,next)=>{});
 
 //用户注册接口
 router.post('/register',(req,res,next)=>{
-  //验证完整性，这里使用简单的if方式，可以使用正则表达式对输入的格式进行验证
+  //验证完整性，这里使用简单的if方式，（后续可以使用正则表达式对输入的格式进行验证）
   if(!req.body.username){
     return res.json({status:1,message:'用户名为空'})
   }
