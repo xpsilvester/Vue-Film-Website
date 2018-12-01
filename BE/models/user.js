@@ -9,8 +9,12 @@ let user = new mongoose.Schema({
   userPhone: String,
   userAdmin: Boolean,
   userPower: Number,
-  userStop: Boolean,
-  updateTime: {type: Date, default: Date.now}
+  userStop: Boolean
+},{
+  timestamps: {
+    createdAt: 'created', 
+    updatedAt: 'updated'
+  }
 })
 
 //用户的查找方法
