@@ -1,6 +1,6 @@
 //数据库
 const mongoose = require('../common/db');
-//电影数据集
+//信数据集
 let mail = new mongoose.Schema({
     fromUser: String,
     toUser: String,

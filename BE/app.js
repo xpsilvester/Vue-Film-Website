@@ -20,8 +20,12 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
+app.use('/api', indexRouter);
 app.use('/api/users', usersRouter);
+
+app.get('/', function (req, res) {
+  res.render('index', { title: 'Express' });
+});
 
 app.get('/api/get', function (req, res) {
   res.send('Got a GET request')

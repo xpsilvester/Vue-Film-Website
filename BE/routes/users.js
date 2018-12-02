@@ -265,7 +265,39 @@ router.post('/sendEmail',(req,res,next)=>{
 });
 
 //用户显示站内信，其中的receive参数值为1时是发送的内容，值为2时是收到的内容
-router.post('/showEmail',(req,res,next)=>{});
+router.post('/showEmail',(req,res,next)=>{
+  //验证完整性，这里使用简单的if方式，（后续可以使用正则表达式对输入的格式进行验证）
+  if(!req.body.token){
+    return res.json({status:1,message:'用户登录状态错误'})
+  }
+  if(!req.body.user_id){
+    return res.json({status:1,message:'用户登录状态出错'})
+  }
+  if(!req.body.receive){
+    return res.json({status:1,message:'receive参数出错'})
+  }
+  if(req.body.token == getMD5Password(req.body.user_id)){
+    if(req.body.receive == 1){
+      //发送的站内信
+      mail.findByFromUserId(req.body.user_id,(err,sendMail)=>{
+        if(err){
+          return res.json({status:1,message:'发送的站内信获取失败',data:err})
+        }
+        return res.json({status:0,message:'发送的站内信获取成功',data:sendMail})
+      })
+    }else{
+      //收到的站内信
+      mail.findByToUserId(req.body.user_id,(err,receiveMail)=>{
+        if(err){
+          return res.json({status:1,message:'收到的站内信获取失败',data:err})
+        }
+        return res.json({status:0,message:'收到的站内信获取成功',data:receiveMail})
+      })
+    }
+  }else{
+    return res.json({status:1,message:'用户登录错误',token:getMD5Password(req.body.user_id)})
+  }
+});
 
 //获取MD5的值
 let getMD5Password = (id) => {
