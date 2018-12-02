@@ -125,35 +125,72 @@ router.post('/support',(req,res,next)=>{
   })
 });
 
+//用户下载
+router.post('/download',(req,res,next)=>{
+  //验证完整性，这里使用简单的if方式，（后续可以使用正则表达式对输入的格式进行验证）
+  if(!req.body.movie_id){
+    return res.json({status:1,message:'电影id传递失败'})
+  }
+  movie.findById(req.body.movie_id,(err,supporMovie)=>{
+    if(!supporMovie){
+      return res.json({status:1,message:'找不到该电影'})
+    }
+    //更新操作
+    movie.update({_id:req.body.movie_id},{movieNumDownload:supporMovie.movieNumDownload+1},(err)=>{
+      if(err){
+        return res.json({status:1,message:'获取下载链接失败',data:err})
+      }
+      return res.json({status:0,message:'获取下载链接成功',data:supporMovie.movieDownload})
+    })
+  })
+});
+
 //用户找回密码
 router.post('/findPassword',(req,res,next)=>{
   //需要输入用户的邮箱信息和手机信息，同时可以更新密码
   //这里需要两个返回情况，一个是req.body.repassword存在时，另一个是repassword不存在时
   //这个接口同时用于密码的重置，需要用户登录
   if(req.body.repassword){
-    //当存在code登录状态时，验证其状态
-    if(!req.body.user_id){
-      return res.json({status:1,message:'用户登录错误'})
-    }
-    if(!req.body.password){
-      return res.json({status:1,message:'用户老密码错误'})
-    }
-    if(req.body.token == getMD5Password(req.body.user_id)){
-      user.findOne({_id:req.body.user_id,password:req.body.repassword},(err,checkUser)=>{
-        if(checkUser){
-          user.update({_id:req.body.user_id},{password:req.body.repassword},(err,userUpdate)=>{
+    //当存在时，需要验证其登录情况或者验证其code
+    if(req.body.token){
+      //当存在code登录状态时，验证其状态
+      if(!req.body.user_id){
+        return res.json({status:1,message:'用户登录错误'})
+      }
+      if(!req.body.password){
+        return res.json({status:1,message:'用户老密码错误'})
+      }
+      if(req.body.token == getMD5Password(req.body.user_id)){
+        user.findOne({_id:req.body.user_id,password:req.body.repassword},(err,checkUser)=>{
+          if(checkUser){
+            user.update({_id:req.body.user_id},{password:req.body.repassword},(err,userUpdate)=>{
+              if(err){
+                return res.json({status:1,message:'更改错误',data:err})
+              }else{
+                return res.json({status:0,message:'更改成功',data:userUpdate})
+              }
+            })
+          }else{
+            return res.json({status:1,message:'用户老密码错误'})
+          }
+        })
+      }else{
+        res.json({status:1,message:'用户登录信息错误',token:req.body.token})
+      }
+    }else{
+      //不存在code时，直接验证mail和phone
+      user.findUserPassword(req.body.username,req.body.usermail,req.body.userphone,(err,userFound)=>{
+        if(userFound.length!=0){
+          user.update({_id:userFound[0]._id},{password:req.body.repassword},(err,userUpdate) => {
             if(err){
               return res.json({status:1,message:'更改错误',data:err})
-            }else{
-              return res.json({status:0,message:'更改成功',data:userUpdate})
             }
+            return res.json({status:0,message:'更改成功',data:userUpdate})
           })
         }else{
-          return res.json({status:1,message:'用户老密码错误'})
+          return res.json({status:1,message:'信息错误'})
         }
       })
-    }else{
-      res.json({status:1,message:'信息错误',token:req.body.token})
     }
   }else{
     //这里只是验证mail和phone，返回验证成功提示和提交的字段，用于之后改密码的操作
@@ -185,7 +222,47 @@ router.post('/findPassword',(req,res,next)=>{
 });
 
 //用户发送站内信
-router.post('/sendEmail',(req,res,next)=>{});
+router.post('/sendEmail',(req,res,next)=>{
+  //验证完整性，这里使用简单的if方式，（后续可以使用正则表达式对输入的格式进行验证）
+  if(!req.body.token){
+    return res.json({status:1,message:'用户登录状态错误'})
+  }
+  if(!req.body.user_id){
+    return res.json({status:1,message:'用户登录状态出错'})
+  }
+  if(!req.body.tousername){
+    return res.json({status:1,message:'未选择相关的用户'})
+  }
+  if(!req.body.title){
+    return res.json({status:1,message:'标题不能为空'})
+  }
+  if(!req.body.context){
+    return res.json({status:1,message:'内容不能为空'})
+  }
+  if(req.body.token == getMD5Password(req.body.user_id)){
+    //存入数据库之前需要先在数据库中获取到要发送用户的user_id
+    user.findByUsername(req.body.tousername,(err,toUser)=>{
+      if(toUser.length != 0){
+        let NewEmail = new mail({
+          fromUser: req.body.user_id,
+          toUser: toUser[0]._id,
+          title: req.body.title,
+          context: req.body.context
+        })
+        NewEmail.save((err)=>{
+          if(err){
+            return res.json({status:1,message:'发送失败',data:err})
+          }
+          return res.json({status:0,message:'发送成功'})
+        })
+      }else{
+        return res.json({status:1,message:'您发送的对象不存在'})
+      }
+    })
+  }else{
+    return res.json({status:1,message:'用户登录错误',token:getMD5Password(req.body.user_id)})
+  }
+});
 
 //用户显示站内信，其中的receive参数值为1时是发送的内容，值为2时是收到的内容
 router.post('/showEmail',(req,res,next)=>{});

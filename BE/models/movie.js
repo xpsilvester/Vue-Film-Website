@@ -2,11 +2,14 @@
 const mongoose = require('../common/db');
 //电影数据集
 let movie = new mongoose.Schema({
-    name: String,
-    picture: String,
-    link: String,
-    download: String,
-    movieNumSuppose: Number
+    movieName: String,
+    movieImg: String,
+    movieVideo: String,
+    movieDownload: String,
+    movieTime: String,
+    movieNumSuppose: Number,
+    movieNumDownload: Number,
+    movieMainPage: Boolean
 },{
     timestamps: {
       createdAt: 'created', 
