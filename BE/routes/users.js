@@ -76,7 +76,34 @@ router.post('/register',(req,res,next)=>{
 });
 
 //用户提交评论
-router.post('/postComment',(req,res,next)=>{});
+router.post('/postComment',(req,res,next)=>{
+  let username = '匿名用户';
+  //验证完整性，这里使用简单的if方式，（后续可以使用正则表达式对输入的格式进行验证）
+  if(req.body.username){
+    username = req.body.username
+  }
+  if(!req.body.movie_id){
+    return res.json({status:1,message:'电影id为空'})
+  }
+  if(!req.body.context){
+    return res.json({status:1,message:'评论内容为空'})
+  }
+  //根据数据集建立一个新的数据内容
+  let saveComment = new comment({
+    movie_id: req.body.movie_id,
+    username: username,
+    context: req.body.context,
+    check:0
+  })
+  //保存合适的数据集
+  saveComment.save((err)=>{
+    if(err){
+      res.json({status:1,message:err})
+    }else{
+      res.json({status:0,message:'评论成功'})
+    }
+  })
+});
 
 //用户点赞
 router.post('/support',(req,res,next)=>{});
@@ -128,7 +155,7 @@ router.post('/findPassword',(req,res,next)=>{
           status:0,
           message:'验证成功，请修改密码',
           data:{
-            userName:req.body.username,
+            username:req.body.username,
             userMail:req.body.usermail,
             userPhone:req.body.userphone
           }
