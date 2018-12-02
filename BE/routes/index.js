@@ -15,7 +15,7 @@ router.get('/', function(req, res, next) {
 });
 
 //Mongoose测试
-router.get('/api/mongooseTest',(req,res,next)=>{
+router.get('/mongooseTest',(req,res,next)=>{
   mongoose.connect('mongodb://localhost:27017/pets');
   mongoose.Promise = global.Promise;
   let Cat = mongoose.model('Cat',{name: String});
