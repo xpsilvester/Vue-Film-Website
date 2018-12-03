@@ -11,7 +11,11 @@ export default {
     this.$http.get('/api/get').then((data) => {
       console.log(data.body)
     })
-    this.$http.post('/api/post').then((data) => {
+    this.$http.post('/api/post', {
+      test: 1
+    }, {
+      emulateJSON: true
+    }).then((data) => {
       console.log(data.body)
     })
   }

@@ -20,19 +20,16 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/api', indexRouter);
-app.use('/api/users', usersRouter);
-app.use('/api/admin', adminRouter);
+app.use('/', indexRouter);
+app.use('/users', usersRouter);
+app.use('/admin', adminRouter);
 
-app.get('/', function (req, res) {
-  res.render('index', { title: 'Express' });
-});
-
-app.get('/api/get', function (req, res) {
+app.get('/get', function (req, res) {
   res.send('Got a GET request')
 });
 
-app.post('/api/post', function (req, res) {
+app.post('/post', function (req, res) {
+  console.log(req.body)
   res.send('Got a POST request')
 })
 

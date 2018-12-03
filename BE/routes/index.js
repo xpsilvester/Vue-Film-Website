@@ -11,7 +11,7 @@ const user = require('../models/user');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.send('Hello World');
+  res.render('index', { title: 'Express' });
 });
 
 //Mongoose测试
