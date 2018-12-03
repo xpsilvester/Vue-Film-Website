@@ -16,14 +16,14 @@ router.get('/', function(req, res, next) {
 //用户登录接口
 router.post('/login',(req,res,next)=>{
   //验证完整性，这里使用简单的if方式，（后续可以使用正则表达式对输入的格式进行验证）
-  if(!req.body.username){
-    return res.json({status:1,message:'用户名为空'})
+  if(!/^[a-zA-Z0-9_-]{4,16}$/.test(req.body.username) || !req.body.username){//4到16位（字母，数字，下划线，减号）
+    return res.json({status:1,message:'用户名为空或格式错误，请输入4到16位（字母，数字，下划线，减号）'})
   }
-  if(!req.body.password){
-    return res.json({status:1,message:'密码为空'})
+  if(!req.body.password || !/^[a-zA-Z0-9_-]{6,16}$/.test(req.body.password)){//6到16位（字母，数字，下划线，减号）
+    return res.json({status:1,message:'密码为空或格式错误，请输入6到16位（字母，数字，下划线，减号）'})
   }
   user.findUserLogin(req.body.username,req.body.password,(err,userSave)=>{
-    if(userSave.length != 0){0
+    if(userSave.length != 0){
       //通过MD5查看密码
       let token_after = getMD5Password(userSave[0].id);
       res.json({status:0,data:{token_after,user:userSave},message:'用户登录成功'})
@@ -32,21 +32,20 @@ router.post('/login',(req,res,next)=>{
     }
   })
 });
-
 //用户注册接口
 router.post('/register',(req,res,next)=>{
   //验证完整性，这里使用简单的if方式，（后续可以使用正则表达式对输入的格式进行验证）
-  if(!req.body.username){
-    return res.json({status:1,message:'用户名为空'})
+  if(!/^[a-zA-Z0-9_-]{4,16}$/.test(req.body.username) || !req.body.username){//4到16位（字母，数字，下划线，减号）
+    return res.json({status:1,message:'用户名为空或格式错误，请输入4到16位（字母，数字，下划线，减号）'})
   }
-  if(!req.body.password){
-    return res.json({status:1,message:'密码为空'})
+  if(!req.body.password || !/^[a-zA-Z0-9_-]{6,16}$/.test(req.body.password)){//6到16位（字母，数字，下划线，减号）
+    return res.json({status:1,message:'密码为空或格式错误，请输入6到16位（字母，数字，下划线，减号）'})
   }
-  if(!req.body.usermail){
-    return res.json({status:1,message:'用户邮箱为空'})
+  if(!req.body.usermail || !/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/.test(req.body.usermail)){
+    return res.json({status:1,message:'用户邮箱为空或格式错误'})
   }
-  if(!req.body.userphone){
-    return res.json({status:1,message:'用户手机为空'})
+  if(!req.body.userphone || !/^\d{11}$/.test(req.body.userphone)){//11位数字
+    return res.json({status:1,message:'用户手机为空或格式错误'})
   }
   user.findByUsername(req.body.username,function(err,userSave){
     if(userSave.length != 0){
