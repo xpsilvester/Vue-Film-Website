@@ -24,7 +24,7 @@
         <div :class="videoOption.isPlay ? 'pause' : 'play'" @click="playVideo"></div>
         <div class="next"></div>
         <div class="progressNum">{{videoOption.currentTime}}</div>
-        <div class="progressBar">
+        <div class="progressBar" @mouseenter="showCurrent">
           <div class="progressWhiteBar" :style="{width:videoOption.progress+'%'}">
             <div class="progressBtn" @mousedown="move" @click="log"></div>
           </div>
@@ -182,6 +182,10 @@ export default {
           document.onmousemove = null;
           document.onmouseup = null;
       };
+    },
+    showCurrent: function(e){
+      let odiv = e.target;        //获取目标元素
+      console.log(e.clientX)
     }
   },
   computed: {
