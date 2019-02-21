@@ -60,5 +60,9 @@ module.exports = {
                 target: '<other_url>'
             }
         },  // 配置多个代理
+        overlay: {
+            warnings: false,
+            errors: true
+        }
     }
 }

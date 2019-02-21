@@ -49,12 +49,11 @@
 </template>
 
 <script>
-import Header from '@/components/Header.vue'
 
 export default {
   name: 'OnlineVideo',
   components: {
-    Header
+    
   },
   data () {
     return {
