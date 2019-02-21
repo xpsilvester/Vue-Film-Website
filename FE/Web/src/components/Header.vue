@@ -1,6 +1,10 @@
 <template>
   <header>
-    <div class="tag"></div>
+    <div id="nav">
+      <router-link to="/">Home</router-link> |
+      <router-link to="/about">About</router-link> |
+      <router-link to="/onlineVideo">onlineVideo</router-link>
+    </div>
   </header>
 </template>
 
@@ -19,6 +23,6 @@ header {
   width: 100%;
   height: 60px;
   display: flex;
-  background: #55a52e;
+  background: #1a1a1a;
 }
 </style>
