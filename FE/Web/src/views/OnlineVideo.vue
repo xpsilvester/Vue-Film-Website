@@ -24,7 +24,7 @@
         <div :class="videoOption.isPlay ? 'pause' : 'play'" @click="playVideo"></div>
         <div class="next"></div>
         <div class="progressNum">{{videoOption.currentTime}}</div>
-        <div class="progressBar" @mouseenter="showCurrent">
+        <div class="progressBar" @click="progressBarClick">
           <div class="progressWhiteBar" :style="{width:videoOption.progress+'%'}">
             <div class="progressBtn" @mousedown="move" @click="log"></div>
           </div>
@@ -156,7 +156,7 @@ export default {
       let $this = this;
       setInterval(() => {
         $this.videoOption.currentTime = $this.calDuration(video.currentTime)
-        //$this.videoOption.progress = video.currentTime / videoTime
+        $this.videoOption.progress = video.currentTime / videoTime * 100
       }, 1000);
     },
     //拖拽进度条
@@ -183,10 +183,15 @@ export default {
           document.onmouseup = null;
       };
     },
-    showCurrent: function(e){
-      let odiv = e.target;        //获取目标元素
-      console.log(e.clientX)
-    }
+    //进度条点击
+    progressBarClick: function(e){
+      let odiv = document.getElementsByClassName('lesson-video-main')[0];        //获取目标元素
+      //算出鼠标相对元素的位置
+      let disX = e.clientX - odiv.offsetLeft - 164;
+      let turnTim = disX / 632 * this.videoDuration
+      this.videoMove(turnTim)
+      //console.log(turnTim)
+    },
   },
   computed: {
     calDuration: function(){
