@@ -34,13 +34,12 @@ export default {
   }
 }
 body,
-html,ul,li {
+html,ul,li,p{
   padding: 0;
   margin: 0;
+  text-align: left;
 }
-p{
-  text-align: left
-}
+
 ul,li{
   list-style: none;
 }

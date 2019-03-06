@@ -1,9 +1,12 @@
 <template>
   <header>
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link> |
-      <router-link to="/onlineVideo">onlineVideo</router-link>
+    <nav>
+      <router-link :class="this.$route.name == 'home' ? 'active' : ''" to="/">首页</router-link> |
+      <router-link :class="this.$route.name == 'onlineVideo' ? 'active' : ''" to="/onlineVideo">在线视频</router-link> |
+      <router-link :class="this.$route.name == 'about' ? 'active' : ''" to="/about">关于</router-link>
+    </nav>
+    <div class="user">
+      <p>登录</p>
     </div>
   </header>
 </template>
@@ -19,10 +22,5 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-header {
-  width: 100%;
-  height: 60px;
-  display: flex;
-  background: #1a1a1a;
-}
+  @import "../scss/Header.scss";
 </style>
