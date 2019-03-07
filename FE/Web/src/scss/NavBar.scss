@@ -1,0 +1,38 @@
+nav{
+    width: 100px;
+    height: 1050px;
+    background: #383838;
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding-top: 84px;
+    display: flex;
+    flex-direction: column;
+
+    a{
+        width: 100px;
+        height: 84px;
+        border-bottom: 1px solid #4c4c4c;
+        &.active{
+            background-color: #dfb636;
+        }
+        &:hover{
+            background-color: #dfb636;
+        }
+        i{
+            width: 60px;
+            height: 60px;
+            display: block;
+            margin: 12px auto;
+        }
+        .home{
+            background:url(../assets/img-sprite.png) no-repeat 0px 0px;
+        }
+        .video{
+            background:url(../assets/img-sprite.png) no-repeat -60px 0px;
+        }
+        .about{
+            background:url(../assets/img-sprite.png) no-repeat -120px 0px;
+        }
+    }
+}

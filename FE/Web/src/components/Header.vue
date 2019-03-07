@@ -1,9 +1,7 @@
 <template>
   <header>
     <nav>
-      <router-link :class="this.$route.name == 'home' ? 'active' : ''" to="/">首页</router-link> |
-      <router-link :class="this.$route.name == 'onlineVideo' ? 'active' : ''" to="/onlineVideo">在线视频</router-link> |
-      <router-link :class="this.$route.name == 'about' ? 'active' : ''" to="/about">关于</router-link>
+      <h3>MOVIE THEATER</h3>
     </nav>
     <div class="user">
       <p>登录</p>
@@ -13,7 +11,7 @@
 
 <script>
 export default {
-  name: "HelloWorld",
+  name: "Header",
   props: {
     msg: String
   }
