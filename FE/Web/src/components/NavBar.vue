@@ -3,6 +3,7 @@
       <router-link :class="this.$route.name == 'home' ? 'active' : ''" to="/"><i class="home"></i></router-link>
       <router-link :class="this.$route.name == 'onlineVideo' ? 'active' : ''" to="/onlineVideo"><i class="video"></i></router-link>
       <router-link :class="this.$route.name == 'about' ? 'active' : ''" to="/about"><i class="about"></i></router-link>
+      <router-link :class="this.$route.name == 'login' ? 'active' : ''" to="/login"><i class="login"></i></router-link>
     </nav>
 </template>
 
