@@ -1,0 +1,49 @@
+.header{
+    width: 100%;
+    height: 50px;
+    background:#262626;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 99;
+
+    .logo-content{
+        color: #FFFFFF;
+        font-size: 18px;
+        line-height: 50px;
+        p{
+            float: left;
+            margin: 0 10px;
+        }
+    }
+    .header-right{
+        float: right;
+        width: 260px;
+        height: 50px;
+        line-height: 50px;
+        color: #fff;
+        font-size: 14px;
+        & > div {
+            float: left;
+            cursor: pointer;
+        }
+        .message{
+            width: 100px;
+            height: 50px;
+            .name{
+                font-size: 14px;
+                text-align: center;
+                margin-right: 5px;
+            }
+            .num{
+                background: red;
+                border-radius: 10px;
+                padding:1px 10px;
+                font-size: 12px;
+            }
+        }
+        .user{
+            margin-right: 50px;
+        }
+    }
+}

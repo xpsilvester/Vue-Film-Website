@@ -6,9 +6,12 @@ import router from './router'
 import VueResource from 'vue-resource'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
+import cookie from 'vue-cookies'
+import store from './store/index.js'
 
 Vue.use(VueResource)
 Vue.use(ElementUI)
+Vue.use(cookie)
 
 Vue.config.productionTip = false
 
@@ -16,6 +19,7 @@ Vue.config.productionTip = false
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 })

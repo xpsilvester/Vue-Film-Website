@@ -1,0 +1,15 @@
+.navbar{
+    width: 200px;
+    background: #e1e1e1;
+    height: 100%;
+    top: 50px;
+    left: 0;
+    position: fixed;
+    & > div {
+        float: left;
+        width: 400px;
+    }
+    a{
+        color: inherit;
+    }
+}
