@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <Header :messageNum="messageNum" :userName="username" />
-    <NavBar v-show="$route.name != 'login'"/>
+    <NavBar v-show="$route.name != 'Login' && $route.name != 'Register'"/>
     <router-link :to="'/user/xpsilvester'">User</router-link>
     <router-link :to="'/HelloWorld'">HelloWorld</router-link>
     <div class="content">

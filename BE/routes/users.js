@@ -5,28 +5,42 @@ const crypto = require('crypto');
 const movie = require('../models/movie');
 const mail = require('../models/mail');
 const comment = require('../models/comment');
+const $token = require('../common/token')
 
 const init_token = 'TKL02o';
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
+  let $createToken = $token.createToken(init_token,2 * 60 *60),
+      getToken = req.query.token
+  res.send('new token:'+ $createToken + ' checkToken:' + $token.checkToken(getToken) + '<br/>cookie:' + req.cookies.CMSToken);
 });
+
+//鉴权检查登录状态
+router.get('/check',function(req,res,next){
+  let userToken = req.cookies.CMSToken
+  if($token.checkToken(userToken)){
+    let newToken = $token.createToken(init_token,2 * 60 *60)
+    return res.json({ status: 0 , newToken: newToken })
+  }else{
+    return res.json({ status: 1 , newToken: '' })
+  }
+})
 
 //用户登录接口
 router.post('/login',(req,res,next)=>{
   //验证完整性，这里使用简单的if方式，（后续可以使用正则表达式对输入的格式进行验证）
   if(!/^[a-zA-Z0-9_-]{4,16}$/.test(req.body.username) || !req.body.username){//4到16位（字母，数字，下划线，减号）
-    return res.json({status:1,message:'用户名为空或格式错误，请输入4到16位（字母，数字，下划线，减号）'})
+    return res.json({status:1, message:'用户名为空或格式错误，请输入4到16位（字母，数字，下划线，减号）'})
   }
   if(!req.body.password || !/^[a-zA-Z0-9_-]{6,16}$/.test(req.body.password)){//6到16位（字母，数字，下划线，减号）
     return res.json({status:1,message:'密码为空或格式错误，请输入6到16位（字母，数字，下划线，减号）'})
   }
-  user.findUserLogin(req.body.username,req.body.password,(err,userSave)=>{
+  user.findUserLogin(req.body.username,getMD5Password(req.body.password),(err,userSave)=>{
     if(userSave.length != 0){
       //通过MD5查看密码
-      let token_after = getMD5Password(userSave[0].id);
-      res.json({status:0,data:{token_after,user:userSave},message:'用户登录成功'})
+      let token = getMD5Password(userSave[0].id);
+      res.json({status:0,data:userSave[0],message:'用户登录成功',token: $token.createToken(req.body.username,2 * 60 *60)})
     }else{
       res.json({status:1,message:'用户名或密码错误'});
     }
@@ -50,11 +64,11 @@ router.post('/register',(req,res,next)=>{
   user.findByUsername(req.body.username,function(err,userSave){
     if(userSave.length != 0){
       //返回错误信息
-      return res.json({status:1,message:'用户已注册'})
+      return res.json({status:1,message:'用户已存在'})
     }else{
       let registerUser = new user({
         username: req.body.username,
-        password: req.body.password,
+        password: getMD5Password(req.body.password),
         userMail: req.body.usermail,
         userPhone: req.body.userphone,
         userAdmin: 0,
@@ -66,7 +80,7 @@ router.post('/register',(req,res,next)=>{
           res.json({status:1,message:err});
           console.log(err);
         }else{
-          res.json({status:0,message:'注册成功',data:doc});
+          res.json({status:0,message:'注册成功',data:doc ,token: $token.createToken(req.body.username,2 * 60 *60)});
           console.log(doc);
         }
       })
