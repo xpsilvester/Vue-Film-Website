@@ -87,7 +87,7 @@
 </template>
 
 <script>
-import 'element-ui/lib/theme-chalk/display.css'
+
 export default {
   name: 'HelloWorld',
   data () {

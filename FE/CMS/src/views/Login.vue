@@ -7,7 +7,7 @@
                 <el-input v-model="ruleForm.name" placeholder="用户名"></el-input>
             </el-form-item>
             <el-form-item label="密码" prop="password">
-                <el-input type="password" v-model="ruleForm.password" placeholder="密码"></el-input>
+                <el-input show-password v-model="ruleForm.password" placeholder="密码"></el-input>
             </el-form-item>
             <el-form-item label="验证码" prop="verify">
                 <el-input v-model="ruleForm.verify" placeholder="验证码">
@@ -51,11 +51,11 @@ export default {
             rules: {
                 name: [
                     { required: true, message: '请输入用户名', trigger: 'blur' },
-                    { min: 3, max: 10, message: '长度在 3 到 10 个字符', trigger: 'blur' }
+                    { min: 4, max: 10, message: '长度在 4 到 10 个字符', trigger: 'blur' }
                 ],
                 password: [
                     { required: true, message: '请输入密码', trigger: 'blur' },
-                    { min: 3, max: 10, message: '长度在 3 到 10 个字符', trigger: 'blur' }
+                    { min: 6, max: 16, message: '长度在 6 到 16 个字符', trigger: 'blur' }
                 ],
                 verify: [
                     { required: true, message: '请输入验证码', trigger: 'blur' },
