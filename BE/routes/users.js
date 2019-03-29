@@ -11,17 +11,19 @@ const init_token = 'TKL02o';
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-  let $createToken = $token.createToken(init_token,2 * 60 *60),
+  let payload = 'ter'
+  let $createToken = $token.createToken(payload,2 * 60 *60),
       getToken = req.query.token
-  res.send('new token:'+ $createToken + ' checkToken:' + $token.checkToken(getToken) + '<br/>cookie:' + req.cookies.CMSToken);
+  return res.json({ decode:  $token.decodeToken(getToken) ,newToken: $createToken,check: $token.checkToken(getToken)})
 });
 
 //鉴权检查登录状态
 router.get('/check',function(req,res,next){
-  let userToken = req.cookies.CMSToken
-  if($token.checkToken(userToken)){
-    let newToken = $token.createToken(init_token,2 * 60 *60)
-    return res.json({ status: 0 , newToken: newToken })
+  let userToken = req.cookies.CMSToken,
+      username = req.cookies.CMSName
+  if($token.checkToken(userToken) && $token.decodeToken(userToken).payload.data == username){
+    let newToken = $token.createToken(username,2 * 60 *60)
+    return res.json({ status: 0 , newToken: newToken ,username:$token.decodeToken(userToken).payload.data })
   }else{
     return res.json({ status: 1 , newToken: '' })
   }
