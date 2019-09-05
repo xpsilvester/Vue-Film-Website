@@ -1,5 +1,5 @@
 # Vue-Film-Website 
-A full-stack framework film website, technology stack is Vue+Express+Mongoose
+A film website by full-stack framework, technology stack is Vue+Express+Mongoose
 
 ### FE
 Front End: Web(user pages)、CMS(manager pages)
