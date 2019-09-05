@@ -1,8 +1,8 @@
 # Vue-Film-Website
-Vue+Express+Mongoose 全栈搭建电影网站
+Vue+Express+Mongoose film websites by full-stack framework 
 
 ### FE
-前端代码: Web(前台页面)、CMS(后台管理页面)
+Front End: Web(user pages)、CMS(manager pages)
 
 ### BE
-后端代码
+Back-End
